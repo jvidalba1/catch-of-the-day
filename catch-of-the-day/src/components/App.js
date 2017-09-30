@@ -11,6 +11,8 @@ class App extends React.Component {
     super()
     this.addFish = this.addFish.bind(this); // set addFish in App component
     this.loadSamples = this.loadSamples.bind(this); // set loadSamples in App component
+    this.addToOrder = this.addToOrder.bind(this); // set loadSamples in App component
+
     // getInitialState
     this.state = {
       fishes: {},
@@ -21,7 +23,8 @@ class App extends React.Component {
   addFish(fish){
     // get a copy from the state
     //update the state
-    const fishes ={...this.state.fishes};
+    // ... => object spread
+    const fishes = {...this.state.fishes};
     
     //add in our new fish
     const timestamp = Date.now();
@@ -29,6 +32,19 @@ class App extends React.Component {
 
     // Set state
     this.setState({ fishes })
+  }
+
+  addToOrder(key){
+    // get a copy from the state
+    //update the state
+    // ... => object spread
+    const order = {...this.state.order};
+    
+    // update or add the new number of fish ordered
+    order[key] = order[key] + 1 || 1;
+
+    // update order state
+    this.setState({ order })
   }
 
   loadSamples(){
@@ -46,7 +62,13 @@ class App extends React.Component {
             {
               Object
                 .keys(this.state.fishes)
-                .map(key => <Fish key={key} details={this.state.fishes[key]}/>)
+                .map(
+                  key => <Fish key={key} 
+                    index={key} 
+                    details={this.state.fishes[key]} 
+                    addToOrder={this.addToOrder} 
+                  />
+                )
                 // error with this, it's null
                 // .map(function (key){
                 //   return <Fish key={key} details={this.state.fishes[key]}/>;
